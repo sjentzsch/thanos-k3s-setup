@@ -1,0 +1,12 @@
+*.retry
+*~
+*.swp
+
+.idea/
+
+kubeconfig/
+
+local-setup/kubeconfig*
+local-setup/.helm*
+
+poc

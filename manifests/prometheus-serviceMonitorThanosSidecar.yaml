@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: test
+    k8s-app: thanos-sidecar
+  name: thanos-sidecar
+  namespace: monitoring
+spec:
+  endpoints:
+  - interval: 15s
+    port: http
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      app: thanos-sidecar

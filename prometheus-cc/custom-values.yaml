@@ -1,0 +1,90 @@
+---
+
+commonLabels:
+  group: test
+
+defaultRules:
+  rules:
+    alertmanager: false
+
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: false
+
+kubeApiServer:
+  enabled: true
+
+kubelet:
+  enabled: true
+
+kubeControllerManager:
+  enabled: true
+
+coreDns:
+  enabled: true
+
+kubeEtcd:
+  enabled: true
+
+kubeScheduler:
+  enabled: true
+
+kubeStateMetrics:
+  enabled: true
+
+nodeExporter:
+  enabled: true
+
+prometheusOperator:
+  service:
+    ## Additional ports to open for Prometheus service
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services
+    ##
+    additionalPorts: []
+    #  - name: thanos-cluster
+    #    port: 10900
+    #    nodePort: 30111
+  createCustomResource: false
+
+prometheus:
+  enabled: true
+  service:
+    targetPort: 9090
+    nodePort: 31090
+    type: NodePort
+  rbac:
+    # note: a role binding in the release namespace will always be created
+    roleNamespaces:
+      - kube-system
+  prometheusSpec:
+    #scrapeInterval: ""
+    #evaluationInterval: ""
+    externalLabels:
+      #region: eu-west
+      customer: my-customer
+    retention: 3h
+    replicas: 1
+    podMetadata:
+      labels:
+        thanos-peers: 'true'
+        app: thanos-sidecar
+    remoteRead: {}
+    remoteWrite: {}
+    additionalScrapeConfigs: []
+    ## Thanos configuration allows configuring various aspects of a Prometheus server in a Thanos environment.
+    ## This section is experimental, it may change significantly without deprecation notice in any release.
+    ## This is experimental and may change significantly without backward compatibility in any release.
+    ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#thanosspec
+    ##
+    # assumes that the Thanos components have been configured to use the thanos-peers.monitoring.svc:10900 service for querier peers to connect to
+    # add the Thanos sidecar to the Prometheus Pod, see also: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#thanosspec
+    thanos:
+      baseImage: improbable/thanos
+      version: v0.3.2
+      # DNS name for Thanos to discover peers through / service for querier peers to connect to (see prometheus-thanosPeerService.yaml)
+      peers: thanos-peers.monitoring.svc:10900
+      objectStorageConfig:
+        key: thanos.yaml
+        name: thanos-objstore-config

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: thanos-compactor
+    thanos-peers: "true"
+  name: thanos-compactor
+  namespace: monitoring
+spec:
+  serviceName: "thanos-compactor"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thanos-compactor
+      thanos-peers: "true"
+  template:
+    metadata:
+      labels:
+        app: thanos-compactor
+        thanos-peers: "true"
+    spec:
+      containers:
+      - args:
+        - compact
+        - --log.level=debug
+        - --data-dir=/var/thanos/store
+        - --objstore.config=$(OBJSTORE_CONFIG)
+        - --wait
+        env:
+        - name: OBJSTORE_CONFIG
+          valueFrom:
+            secretKeyRef:
+              key: thanos.yaml
+              name: thanos-objstore-config
+        image: improbable/thanos:v0.3.2
+        name: thanos-compactor
+        ports:
+        - containerPort: 10902
+          name: http
+        volumeMounts:
+        - name: data
+          mountPath: /var/thanos/store
+          readOnly: false
+      volumes:
+      - name: data
+        emptyDir: {}
+  volumeClaimTemplates: []

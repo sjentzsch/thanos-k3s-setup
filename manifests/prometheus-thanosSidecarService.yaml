@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: thanos-sidecar
+  name: thanos-sidecar
+  namespace: monitoring
+spec:
+  ports:
+  - name: http
+    port: 10902
+    targetPort: http
+  selector:
+    app: prometheus
