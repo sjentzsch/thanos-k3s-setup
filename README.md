@@ -1,5 +1,7 @@
 Deploy a full-fledged Thanos-based setup build on top of Prometheus-Operator locally on k3s and Minio.
 
+![architecture](img/architecture.png)
+
 Features:
 * k3s-based lightweight Kubernetes (https://github.com/rancher/k3s) spinning up two clusters with each two nodes
 * remote S3 storage via Minio (https://github.com/minio/minio)
