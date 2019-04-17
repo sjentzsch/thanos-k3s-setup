@@ -1,12 +1,12 @@
-Deploy a full-fledged Thanos-based setup build on top of Prometheus-Operator locally on k3s and Minio.
+Deploy a full-fledged [Thanos](https://github.com/improbable-eng/thanos)-based setup build on top of [Prometheus-Operator](https://github.com/coreos/prometheus-operator) locally on [k3s](https://github.com/rancher/k3s) and [Minio](https://github.com/minio/minio).
 
 Features:
-* k3s-based lightweight Kubernetes (https://github.com/rancher/k3s) spinning up two clusters with each two nodes
-* S3 storage via Minio (https://github.com/minio/minio) offering unlimited retention while Prometheus retention is minimal
+* [k3s](https://github.com/rancher/k3s)-based lightweight Kubernetes spinning up two clusters with each two nodes
+* S3 storage via [Minio](https://github.com/minio/minio) offering unlimited retention while Prometheus retention is minimal
+* manifests for all [Thanos](https://github.com/improbable-eng/thanos) component (except `Ruler`)
 * Thanos global view across the clusters: Control-plane (`cp`) has access to the metrics of the customer-cluster (`cc`)
-* Grafana connected to Thanos Query within `cp`
+* [Grafana](https://github.com/grafana/grafana) connected to Thanos Query within `cp`
 * automated via bash scripts (using `docker-compose`, `docker`, `helm`, `kubectl`)
-* manifests for all Thanos component (except `Ruler`)
 
 This work is meant for testing only, in order to understand each component, and not at all production-ready.
 
