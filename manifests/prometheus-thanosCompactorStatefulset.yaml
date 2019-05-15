@@ -3,7 +3,6 @@ kind: StatefulSet
 metadata:
   labels:
     app: thanos-compactor
-    thanos-peers: "true"
   name: thanos-compactor
   namespace: monitoring
 spec:
@@ -12,12 +11,10 @@ spec:
   selector:
     matchLabels:
       app: thanos-compactor
-      thanos-peers: "true"
   template:
     metadata:
       labels:
         app: thanos-compactor
-        thanos-peers: "true"
     spec:
       containers:
       - args:
