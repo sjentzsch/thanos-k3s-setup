@@ -1,7 +1,7 @@
 version: '3'
 services:
   server-cp:
-    image: rancher/k3s:v0.4.0
+    image: rancher/k3s:v0.5.0
     command: server --disable-agent
     environment:
     - K3S_CLUSTER_SECRET=clustersecret-cp
@@ -15,11 +15,13 @@ services:
     - 6443:6443
 
   node-cp:
-    image: rancher/k3s:v0.4.0
+    image: rancher/k3s:v0.5.0
     tmpfs:
     - /run
     - /var/run
     privileged: true
+    depends_on:
+    - server-cp
     environment:
     - K3S_URL=https://server-cp:6443
     - K3S_CLUSTER_SECRET=clustersecret-cp
@@ -29,7 +31,7 @@ services:
     - 21300-21301:31300
 
   server-cc:
-    image: rancher/k3s:v0.4.0
+    image: rancher/k3s:v0.5.0
     command: server --disable-agent
     environment:
     - K3S_CLUSTER_SECRET=clustersecret-cc
@@ -43,11 +45,13 @@ services:
     - 6444:6443
 
   node-cc:
-    image: rancher/k3s:v0.4.0
+    image: rancher/k3s:v0.5.0
     tmpfs:
     - /run
     - /var/run
     privileged: true
+    depends_on:
+    - server-cc
     environment:
     - K3S_URL=https://server-cc:6443
     - K3S_CLUSTER_SECRET=clustersecret-cc
