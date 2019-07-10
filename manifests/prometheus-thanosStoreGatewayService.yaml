@@ -1,0 +1,17 @@
+# This allow us to do SRV lookup: thanos-store-gateway.monitoring.svc
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    thanos-store-api: "true"
+  name: thanos-store-gateway
+  namespace: monitoring
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: grpc
+    port: 10901
+    targetPort: grpc
+  selector:
+    thanos-store-api: "true"

@@ -89,8 +89,8 @@ prometheus:
     replicas: 1
     podMetadata:
       labels:
-        thanos-peers: 'true'
         app: thanos-sidecar
+        thanos-store-api: "true"
     remoteRead: {}
     remoteWrite: {}
     additionalScrapeConfigs: []
@@ -112,13 +112,10 @@ prometheus:
     ## This is experimental and may change significantly without backward compatibility in any release.
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#thanosspec
     ##
-    # assumes that the Thanos components have been configured to use the thanos-peers.monitoring.svc:10900 service for querier peers to connect to
     # add the Thanos sidecar to the Prometheus Pod, see also: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#thanosspec
     thanos:
       baseImage: improbable/thanos
-      version: v0.3.2
-      # DNS name for Thanos to discover peers through / service for querier peers to connect to (see prometheus-thanosPeerService.yaml)
-      peers: thanos-peers.monitoring.svc:10900
+      version: v0.5.0
       objectStorageConfig:
         key: thanos.yaml
         name: thanos-objstore-config

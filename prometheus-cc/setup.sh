@@ -15,8 +15,8 @@ ip_s3_1=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{
 thanos_s3_config_b64=$(sed -e "s/\${store-s3-ip}/${ip_s3_1}/" thanos-s3-config.yaml | base64 -w0)
 sed -e "s/\${thanos-s3-config-b64}/${thanos_s3_config_b64}/" ../manifests/thanos-s3-config-secret.yaml | kubectl --kubeconfig=../local-setup/kubeconfig-cc.yaml apply -f -
 
-# Thanos peer service
-kubectl --kubeconfig=../local-setup/kubeconfig-cc.yaml apply -f ../manifests/prometheus-thanosPeerService.yaml
+# Thanos store gateway service
+kubectl --kubeconfig=../local-setup/kubeconfig-cc.yaml apply -f ../manifests/prometheus-thanosStoreGatewayService.yaml
 
 
 ### Prometheus Operator

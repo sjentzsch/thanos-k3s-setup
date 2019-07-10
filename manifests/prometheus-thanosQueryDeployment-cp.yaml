@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   labels:
     app: thanos-query
-    thanos-peers: "true"
   name: thanos-query
   namespace: monitoring
 spec:
@@ -11,12 +10,10 @@ spec:
   selector:
     matchLabels:
       app: thanos-query
-      thanos-peers: "true"
   template:
     metadata:
       labels:
         app: thanos-query
-        thanos-peers: "true"
     spec:
       containers:
       - args:
@@ -25,19 +22,22 @@ spec:
         - --query.timeout=2m
         - --query.max-concurrent=20
         - --query.replica-label=replica
+        - --query.auto-downsampling
+        - --store=dnssrv+thanos-store-gateway.monitoring.svc
+        - --store.sd-dns-interval=30s
         - --store.sd-files=store-targets-sd.json
         - --store.sd-interval=1m
-        - --query.auto-downsampling
-        - --cluster.peers=thanos-peers.monitoring.svc:10900
-        image: improbable/thanos:v0.3.2
+        image: improbable/thanos:v0.5.0
         name: thanos-query
         ports:
         - containerPort: 10902
           name: http
         - containerPort: 10901
           name: grpc
-        - containerPort: 10900
-          name: cluster
+        livenessProbe:
+          httpGet:
+            path: /-/healthy
+            port: http
         volumeMounts:
         - name: config-store-sd
           mountPath: "/store-targets-sd.json"

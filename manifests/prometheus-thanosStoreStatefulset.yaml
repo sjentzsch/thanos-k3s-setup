@@ -3,28 +3,25 @@ kind: StatefulSet
 metadata:
   labels:
     app: thanos-store
-    thanos-peers: "true"
   name: thanos-store
   namespace: monitoring
 spec:
-  serviceName: "thanos-store"
+  serviceName: thanos-store
   replicas: 1
   selector:
     matchLabels:
       app: thanos-store
-      thanos-peers: "true"
   template:
     metadata:
       labels:
         app: thanos-store
-        thanos-peers: "true"
+        thanos-store-api: "true"
     spec:
       containers:
       - args:
         - store
         - --log.level=debug
         - --data-dir=/var/thanos/store
-        - --cluster.peers=thanos-peers.monitoring.svc:10900
         - --objstore.config=$(OBJSTORE_CONFIG)
         env:
         - name: OBJSTORE_CONFIG
@@ -32,11 +29,9 @@ spec:
             secretKeyRef:
               key: thanos.yaml
               name: thanos-objstore-config
-        image: improbable/thanos:v0.3.2
+        image: improbable/thanos:v0.5.0
         name: thanos-store
         ports:
-        - containerPort: 10900
-          name: cluster
         - containerPort: 10901
           name: grpc
         - containerPort: 10902

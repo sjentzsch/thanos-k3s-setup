@@ -44,3 +44,6 @@ Note that Grafana Dashboards for Thanos components are not yet automatically dep
 
 # Cleanup (full)
 Within `local-setup/` simply run `./cleanup.sh`.
+
+# Further Links
+* Inspiration for Kubernetes manifest files: https://github.com/improbable-eng/thanos/tree/master/tutorials/kubernetes-demo/manifests
