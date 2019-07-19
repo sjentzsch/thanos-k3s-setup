@@ -27,7 +27,7 @@ spec:
         - --store.sd-dns-interval=30s
         - --store.sd-files=store-targets-sd.json
         - --store.sd-interval=1m
-        image: improbable/thanos:v0.5.0
+        image: improbable/thanos:v0.6.0
         name: thanos-query
         ports:
         - containerPort: 10902

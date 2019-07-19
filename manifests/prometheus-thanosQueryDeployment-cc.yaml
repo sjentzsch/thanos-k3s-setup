@@ -25,7 +25,7 @@ spec:
         - --query.auto-downsampling
         - --store=dnssrv+thanos-store-gateway.monitoring.svc
         - --store.sd-dns-interval=30s
-        image: improbable/thanos:v0.5.0
+        image: improbable/thanos:v0.6.0
         name: thanos-query
         ports:
         - containerPort: 10902
