@@ -1,8 +1,12 @@
 version: '3'
 services:
   server-cp:
-    image: rancher/k3s:v0.7.0
-    command: server --disable-agent
+    image: rancher/k3s:latest
+    command: server
+    tmpfs:
+    - /run
+    - /var/run
+    privileged: true
     environment:
     - K3S_CLUSTER_SECRET=clustersecret-cp
     - K3S_KUBECONFIG_OUTPUT=/output/kubeconfig-cp.yaml
@@ -15,7 +19,7 @@ services:
     - 6443:6443
 
   node-cp:
-    image: rancher/k3s:v0.7.0
+    image: rancher/k3s:latest
     tmpfs:
     - /run
     - /var/run
@@ -31,8 +35,12 @@ services:
     - 21300-21301:31300
 
   server-cc:
-    image: rancher/k3s:v0.7.0
-    command: server --disable-agent
+    image: rancher/k3s:latest
+    command: server
+    tmpfs:
+    - /run
+    - /var/run
+    privileged: true
     environment:
     - K3S_CLUSTER_SECRET=clustersecret-cc
     - K3S_KUBECONFIG_OUTPUT=/output/kubeconfig-cc.yaml
@@ -45,7 +53,7 @@ services:
     - 6444:6443
 
   node-cc:
-    image: rancher/k3s:v0.7.0
+    image: rancher/k3s:latest
     tmpfs:
     - /run
     - /var/run

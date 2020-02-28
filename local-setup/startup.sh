@@ -11,12 +11,12 @@ do
 done
 
 # need to adapt cluster server port within kubeconfig (which would otherwise conflict)
-sed -i -e 's/localhost:6443/localhost:6443/g' kubeconfig-cp.yaml
-sed -i -e 's/localhost:6443/localhost:6444/g' kubeconfig-cc.yaml
+sed -i -e 's/127.0.0.1:6443/127.0.0.1:6443/g' kubeconfig-cp.yaml
+sed -i -e 's/127.0.0.1:6443/127.0.0.1:6444/g' kubeconfig-cc.yaml
 
 echo "wait for all nodes to be ready on both clusters ..."
-until [ $(kubectl --kubeconfig=kubeconfig-cp.yaml get nodes | grep -c "Ready") -eq 2 ]; do sleep 1 ; done
-until [ $(kubectl --kubeconfig=kubeconfig-cc.yaml get nodes | grep -c "Ready") -eq 2 ]; do sleep 1 ; done
+until [ $(kubectl --kubeconfig=kubeconfig-cp.yaml get nodes | grep -v "NotReady" | grep -c "Ready") -eq 3 ]; do sleep 1 ; done
+until [ $(kubectl --kubeconfig=kubeconfig-cc.yaml get nodes | grep -v "NotReady" | grep -c "Ready") -eq 3 ]; do sleep 1 ; done
 
 # print cp nodes:
 echo "cp nodes:"
